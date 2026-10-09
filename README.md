@@ -5,7 +5,7 @@
 - Ege Kurnaz
 - Emre Yılmaz
 - Fatih Elagöz
-- Eyüp Coşkun
+- Eyüp Efe Coşkun
 
 ## Project
 
