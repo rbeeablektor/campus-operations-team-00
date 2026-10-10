@@ -2,10 +2,10 @@
 
 ## Team Members
 
-- Ege Kurnaz
-- Emre Yılmaz
-- Fatih Elagöz
-- Eyüp Efe Coşkun
+- Ege KURNAZ
+- Emre YILMAZ
+- Fatih ELAGÖZ
+- Eyüp Efe COŞKUN
 
 ## Project
 
