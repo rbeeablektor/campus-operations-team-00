@@ -15,7 +15,7 @@ Campus Operations Semester Project
 
 Üniversite binamız yaklaşık 15 kattan oluşmaktadır ve öğrenciler
 derslerine veya bina içerisindeki farklı alanlara ulaşabilmek için
-gün içerisinde katlar arasında sık sık hareket etmektedir.
+gün içerisinde katlar arasında sık sık hareket etmek zorunda kalmaktadır.
 
 Binada iki asansör tek numaralı katlara, iki asansör ise çift
 numaralı katlara hizmet vermektedir. Katlar arasında merdiven
