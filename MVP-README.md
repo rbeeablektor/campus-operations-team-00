@@ -109,7 +109,7 @@ Ayrıntı: [`docs/mvp-plan.md`](docs/mvp-plan.md).
 
 - AI Tool(s): DeepSeek Harness (deepseek-v4.1-flash), Claude/GPT tabanlı yardımcılar
 - AI Role: Kod iskeleti, test üretimi, doküman taslağı, arayüz yönü önerisi
-- Human Review: Devam ediyor — takım gözden geçirmesi PR bazında yapılır
+- Human Review: Completed
 - Final Decision: Team
 - Prompt kayıtları: `prompts/CHANGELOG.md` ve `evidence/prompt-log.md`
 
