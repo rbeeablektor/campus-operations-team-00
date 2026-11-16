@@ -11,15 +11,15 @@
 | Metrik | Değer |
 |---|---|
 | Süite (describe) | 24 |
-| Test | 117 |
-| Geçen | 117 |
+| Test | 118 |
+| Geçen | 118 |
 | Başarısız | 0 |
 | Atlanan | 0 |
 | Süre | ~80 ms |
 
 ```
-ℹ tests 117
-ℹ pass 117
+ℹ tests 118
+ℹ pass 118
 ℹ fail 0
 ```
 
@@ -27,7 +27,7 @@
 
 | Dosya | Süite | Test | Durum |
 |---|---|---|---|
-| `tests/model.test.js` | 7 | 45 | geçti |
+| `tests/model.test.js` | 7 | 46 | geçti |
 | `tests/present.test.js` | 3 | 13 | geçti |
 | `tests/evidence.test.js` | 5 | 19 | geçti |
 | `tests/consistency.test.js` | 3 | 12 | geçti |
@@ -95,10 +95,10 @@ Denetimde ayrıca doğrulananlar: bölge işaretleri (1 `main`, 1 `nav`, 1 `asid
 tek `h1`), etiketsiz alan 0, adsız düğme 0, odak halkası `solid 2px`, Enter ile bölüm geçişi,
 kayıt kalıcılığı (yenileme sonrası korunuyor), CSV başlığı, konsol hatası 0.
 
-### 4.3 Bina kuralı güncellemesi (16.11.2026)
+### 4.3 Bina kuralı güncellemeleri (16.11.2026)
 
-Kullanıcı bildirimi: "1. kattaki tüm asansörler 1, 2 ve 3'e gidiyor; sonrasında tekler
-teke, çiftler çifte." Model buna göre yeniden kuruldu:
+**1) Ortak katlar.** Kullanıcı bildirimi: "1. kattaki tüm asansörler 1, 2 ve 3'e gidiyor;
+sonrasında tekler teke, çiftler çifte." Model buna göre yeniden kuruldu:
 
 | Önce | Sonra |
 |---|---|
@@ -107,10 +107,19 @@ teke, çiftler çifte." Model buna göre yeniden kuruldu:
 | Aktarma yalnızca uyarıydı, süre üretilmiyordu | Aktarma **hesaplanıyor**: 5 → 6 için 3. katta geçiş, iki bekleme + hol yürümesi |
 | Erişilebilir kullanıcı 5 → 6 için "rota yok" görüyordu | Aynı kullanıcı **aktarmalı asansör** rotası görüyor |
 
-Doğrulama: `tests/model.test.js` (ortak kat, doğrudan/aktarma planı, 15×15×3 tarama) ve
-tarayıcı ölçümü — 2 → 7 "İki seçenek başabaş" (asansör 1 dk 20 sn), 5 → 6 "Merdiven
-1 dk 52 sn daha hızlı" (asansör 3. katta aktarma, 2 dk 31 sn), erişilebilirlik modunda
-"Aktarmalı asansör".
+**2) 15. kat ortak kata eklendi.** Kullanıcı bildirimi: "15. kata tek ve çift asansör
+çıkabiliyor."
+
+| Önce | Sonra |
+|---|---|
+| 15 yalnız tek asansörün; 14 → 15 aktarma gerektiriyordu | **15 ortak kat**: hem tek hem çift asansör çıkar, 14 → 15 **doğrudan** |
+| Çift asansörün en üst katı 14 | Çift asansörün de en üst katı **15** (tur süresi eşitlendi) |
+| Üst katlarda aktarma yalnızca 3/1/2 üzerinden | Üst katlarda **15. kat** en yakın aktarma noktası (ör. 14 → 13) |
+
+Doğrulama: `tests/model.test.js` (ortak kat kümesi, 15'e iki gruptan doğrudan erişim,
+aktarma katı seçimi, 15×15×3 tarama) ve tarayıcı ölçümü — 14 → 15 "Merdiven 31 sn daha
+hızlı" (asansör doğrudan, 1 dk 10 sn), 14 → 13 "Merdiven 1 dk 51 sn daha hızlı" (15. katta
+aktarma), şaft panelinde 15. satırda iki şerit de dolu.
 
 ## 5. Erişilebilirlik durumu
 

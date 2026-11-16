@@ -9,7 +9,7 @@ ona hizmet verdiğini ve o anda asansörle mi merdivenle mi daha hızlı gidece�
 
 | # | Özellik | Neden MVP'de |
 |---|---|---|
-| F1 | Kat → asansör grubu eşlemesi (1–3 ortak, 4+ tek/çift) | Problemin en net, tartışmasız parçası; veri gerektirmez |
+| F1 | Kat → asansör grubu eşlemesi (1, 2, 3, 15 ortak; arada tek/çift) | Problemin en net, tartışmasız parçası; veri gerektirmez |
 | F2 | Bekleme ve toplam süre tahmini | Kullanıcının kararının girdisi |
 | F3 | Asansör ↔ merdiven karşılaştırması ve öneri | Kullanıcıya değer üreten tek çıktı |
 | F4 | Erişilebilirlik modu | Merdiven herkes için uygun değil; öneri üretilmemeli |

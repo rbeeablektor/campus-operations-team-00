@@ -76,10 +76,11 @@ MVP bu tek kararı verir. Ölçülebilir başarı: kullanıcı 10 saniyede "bekl
 ### 2.2 Bina varsayımları
 
 - 15 kat. **1 = zemin kat.** Asansörler: **O1, O2 tek kat asansörleri**, **E1, E2 çift kat asansörleri**.
-- **Ortak katlar 1, 2, 3:** dört asansör de bu katlara uğrar, bu katlardan her asansöre binilir.
-- 4 ve üstünde tek katlar tek asansörlere (5,7,…,15), çift katlar çift asansörlere (4,6,…,14).
-- **Aktarma** yalnızca iki kat da 4 ve üstünde ve farklı grupta olduğunda gerekir (ör. 5 → 6);
-  ortak bir katta (1–3) geçiş yapılır, iki bekleme + hol yürümesi hesaplanır.
+- **Ortak katlar 1, 2, 3 ve 15:** dört asansör de bu katlara uğrar; 15. kata hem tek hem
+  çift asansör çıkabilir, bu katlardan her asansöre binilir.
+- Aradaki katlarda tek katlar tek asansörlere (5,7,…,13), çift katlar çift asansörlere (4,6,…,14).
+- **Aktarma** yalnızca iki kat da 4–14 arasında ve farklı grupta olduğunda gerekir (ör. 5 → 6);
+  ortak bir katta (1, 2, 3 veya 15) geçiş yapılır, iki bekleme + hol yürümesi hesaplanır.
 
 ### 2.3 Model (deterministik, tek dosyada parametre)
 

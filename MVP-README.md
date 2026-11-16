@@ -71,10 +71,12 @@ Script'ler `globalThis.CEM` ad alanına yazar; testler aynı dosyaları `tests/s
 
 ## Bina kuralı
 
-- **1 = zemin kat.** Dört asansör de **1, 2 ve 3**'e uğrar (ortak katlar).
-- 4 ve üstünde **tek katlar tek asansörlere, çift katlar çift asansörlere**.
-- Bu yüzden 3'ten 2'ye, 2'den 7'ye doğrudan gidilir; **aktarma** yalnızca iki kat da
-  4 ve üstünde ve farklı grupta olduğunda gerekir (ör. 5 → 6, 3. katta aktarma).
+- **1 = zemin kat.** Dört asansör de **1, 2, 3 ve 15**'e uğrar (ortak katlar); 15. kata
+  hem tek hem çift asansör çıkabilir.
+- Aradaki katlarda **tek katlar tek asansörlere, çift katlar çift asansörlere**.
+- Bu yüzden 3'ten 2'ye, 2'den 7'ye, 14'ten 15'e doğrudan gidilir; **aktarma** yalnızca
+  iki kat da 4–14 arasında ve farklı grupta olduğunda gerekir (ör. 5 → 6 için 3. kat,
+  14 → 13 için 15. kat).
 
 ## Model, kısaca
 

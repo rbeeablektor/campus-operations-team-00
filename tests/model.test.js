@@ -40,25 +40,25 @@ describe('kat ve grup eşlemesi', () => {
     assert.equal(floors.at(-1), 15)
   })
 
-  it('1, 2 ve 3 ortak katlardır', () => {
-    assert.deepEqual(commonFloors(), [1, 2, 3])
+  it('1, 2, 3 ve 15 ortak katlardır', () => {
+    assert.deepEqual(commonFloors(), [1, 2, 3, 15])
     assert.equal(BUILDING.groundFloor, 1)
-    for (const floor of [1, 2, 3]) assert.equal(isCommonFloor(floor), true)
+    for (const floor of [1, 2, 3, 15]) assert.equal(isCommonFloor(floor), true)
     assert.equal(isCommonFloor(4), false)
-    assert.equal(isCommonFloor(15), false)
+    assert.equal(isCommonFloor(14), false)
   })
 
   it('ortak katlara iki grup da hizmet eder', () => {
-    assert.deepEqual(groupsForFloor(1), ['odd', 'even'])
-    assert.deepEqual(groupsForFloor(2), ['odd', 'even'])
-    assert.deepEqual(groupsForFloor(3), ['odd', 'even'])
+    for (const floor of [1, 2, 3, 15]) {
+      assert.deepEqual(groupsForFloor(floor), ['odd', 'even'], `${floor}. kat`)
+    }
   })
 
-  it('4. kattan yukarısı tek/çift ayrımına döner', () => {
+  it('aradaki katlarda tek/çift ayrımı geçerli', () => {
     assert.deepEqual(groupsForFloor(4), ['even'])
     assert.deepEqual(groupsForFloor(5), ['odd'])
     assert.deepEqual(groupsForFloor(14), ['even'])
-    assert.deepEqual(groupsForFloor(15), ['odd'])
+    assert.deepEqual(groupsForFloor(13), ['odd'])
   })
 
   it('geçersiz katlara hiçbir grup hizmet etmez', () => {
@@ -71,7 +71,7 @@ describe('kat ve grup eşlemesi', () => {
 
   it('grup kat listeleri ortak katları içerir', () => {
     assert.deepEqual(floorsForGroup('odd'), [1, 2, 3, 5, 7, 9, 11, 13, 15])
-    assert.deepEqual(floorsForGroup('even'), [1, 2, 3, 4, 6, 8, 10, 12, 14])
+    assert.deepEqual(floorsForGroup('even'), [1, 2, 3, 4, 6, 8, 10, 12, 14, 15])
   })
 })
 
@@ -146,10 +146,12 @@ describe('bekleme modeli', () => {
     }
   })
 
-  it('tek grup üst katı daha yüksek olduğu için daha uzun tur yapar', () => {
-    assert.ok(
-      waitModel('odd', OFFPEAK).roundTripSeconds >
-        waitModel('even', OFFPEAK).roundTripSeconds
+  it('iki grup da aynı en üst kata çıkar (15) ve aynı tur uzunluğunda başlar', () => {
+    assert.equal(Math.max(...floorsForGroup('odd')), 15)
+    assert.equal(Math.max(...floorsForGroup('even')), 15)
+    assert.equal(
+      waitModel('odd', OFFPEAK).roundTripSeconds,
+      waitModel('even', OFFPEAK).roundTripSeconds
     )
   })
 })
@@ -186,7 +188,7 @@ describe('asansör planı', () => {
   })
 
   it('farklı gruplarda kalan katlar için ortak katta aktarma üretir', () => {
-    for (const [from, to] of [[5, 6], [15, 14], [4, 5], [6, 9]]) {
+    for (const [from, to] of [[5, 6], [4, 5], [6, 9], [14, 13]]) {
       const plan = elevatorPlan(from, to, OFFPEAK)
       assert.equal(plan.kind, 'transfer', `${from} → ${to}`)
       assert.equal(plan.legs.length, 2, `${from} → ${to}`)
@@ -194,9 +196,18 @@ describe('asansör planı', () => {
     }
   })
 
+  it('15. kata iki gruptan da doğrudan gidilir', () => {
+    for (const from of [14, 13, 5, 2]) {
+      const plan = elevatorPlan(from, 15, OFFPEAK)
+      assert.equal(plan.kind, 'direct', `${from} → 15`)
+    }
+    assert.equal(elevatorPlan(14, 15, OFFPEAK).group, 'even')
+    assert.equal(elevatorPlan(13, 15, OFFPEAK).group, 'odd')
+  })
+
   it('aktarma katı olarak en yakın ortak katı seçer', () => {
     assert.equal(elevatorPlan(5, 6, OFFPEAK).viaFloor, 3)
-    assert.equal(elevatorPlan(15, 14, OFFPEAK).viaFloor, 3)
+    assert.equal(elevatorPlan(14, 13, OFFPEAK).viaFloor, 15)
   })
 
   it('aktarmalı toplam iki bekleme, iki seyir, yürüme ve koridordan oluşur', () => {

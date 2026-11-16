@@ -7,14 +7,14 @@ Bu belge tahmin modelinin tek açıklamasıdır. Kodla çelişirse kod doğrudur
 
 - 15 kat. **1 = zemin kat.**
 - Dört asansör, iki grup: **tek kat asansörleri** ve **çift kat asansörleri** (her grupta 2 asansör).
-- **Ortak katlar: 1, 2 ve 3.** Dört asansör de bu katlara uğrar; bu katlardan her
-  asansöre binilebilir ve bu katlara her asansörle gidilebilir.
-- **4. kattan yukarısı:** tek katlar (5, 7, …, 15) yalnız tek asansörlere, çift katlar
+- **Ortak katlar: 1, 2, 3 ve 15.** Dört asansör de bu katlara uğrar; bu katlardan her
+  asansöre binilebilir ve bu katlara her asansörle gidilebilir. 15. kata hem tek hem
+  çift asansör çıkabilir.
+- **Aradaki katlarda:** tek katlar (5, 7, …, 13) yalnız tek asansörlere, çift katlar
   (4, 6, …, 14) yalnız çift asansörlere.
-- Sonuç: 1–3 arası her yolculuk doğrudur (ör. 3 → 2, 2 → 3, 1 → 2). 2 → 7 de doğrudur,
-  çünkü tek asansör 2. kata uğrar. **Aktarma** yalnızca iki kat da 4 ve üstünde ve
-  farklı grupta olduğunda gerekir (ör. 5 → 6, 15 → 14); ortak bir katta (1, 2 veya 3)
-  tek asansörden çift asansöre geçilir.
+- Sonuç: ortak katlardan her yöne doğrudur (3 → 2, 2 → 7, 14 → 15). **Aktarma** yalnızca
+  iki kat da 4–14 arasında ve farklı grupta olduğunda gerekir (ör. 5 → 6, 14 → 13);
+  ortak bir katta (1, 2, 3 veya 15) tek asansörden çift asansöre geçilir.
 
 ## 2. Bekleme modeli
 
@@ -42,9 +42,9 @@ merdiven      = |b − a| × (çıkışsa stairsSecondsPerFloorUp, inişse …Do
               + landingSeconds + corridorSeconds
 ```
 
-Doğrudan birden fazla grup mümkünse (iki kat da 1–3 arasında) **en kısa toplam**
-seçilir. Aktarmada ortak katlar tek tek denenir, toplamı en küçük olan kazanır;
-sayısal olarak her zaman 3. kat en iyisidir (her iki bacağı da kısaltır).
+Doğrudan birden fazla grup mümkünse (iki kat da ortak kat) **en kısa toplam** seçilir.
+Aktarmada ortak katlar (1, 2, 3, 15) tek tek denenir, toplamı en küçük olan kazanır;
+örneğin 5 → 6 için 3. kat, 14 → 13 için 15. kat en iyisidir.
 
 Karar:
 
@@ -89,15 +89,14 @@ Pencere bitiş anı dahil değildir (09:00 → 1.0).
 
 | Yolculuk | Asansör | Merdiven | Sonuç |
 |---|---|---|---|
-| 1 → 3 | 71 sn | 52 sn | Merdiven 19 sn daha hızlı |
+| 1 → 3 | 73 sn | 52 sn | Merdiven 21 sn daha hızlı |
 | 1 → 5 | 77 sn | 78 sn | Başabaş (fark 1 sn) |
 | 1 → 7 | 82 sn | 104 sn | Asansör 22 sn daha hızlı |
 | 1 → 15 | 101 sn | 208 sn | Asansör 107 sn daha hızlı |
 | 2 → 7 | 80 sn (doğrudan, tek asansör) | 91 sn | Başabaş (fark 11 sn) |
-| 2 → 4 | 71 sn | 52 sn | Merdiven 19 sn daha hızlı |
-| 2 → 6 | 76 sn | 78 sn | Başabaş (fark 2 sn) |
-| 5 → 6 | 151 sn (3. katta aktarma) | 39 sn | Merdiven 112 sn daha hızlı |
-| 3 → 1 | 71 sn | 48 sn | Merdiven 23 sn daha hızlı |
+| 14 → 15 | 70 sn (doğrudan, çift asansör) | 39 sn | Merdiven 31 sn daha hızlı |
+| 5 → 6 | 153 sn (3. katta aktarma) | 39 sn | Merdiven 114 sn daha hızlı |
+| 14 → 13 | 148 sn (15. katta aktarma) | 37 sn | Merdiven 111 sn daha hızlı |
 
 Sakin saatte (09:30) 1 → 15: asansör 86 sn, merdiven 208 sn → asansör.
 
@@ -107,7 +106,7 @@ Bu tablo `docs/test-report.md` içindeki kabul testleriyle aynı senaryoları ku
 
 - Gerçek asansör konum/çağrı verisine dijital erişim var mı? Doğrulanmadı.
 - Gerçek ortalama bekleme süresi, tur süresi ve durak sayısı ölçülmedi.
-- Ortak katların (1–3) gerçekten dört asansör tarafından servis edildiği **saha
+- Ortak katların (1, 2, 3, 15) gerçekten dört asansör tarafından servis edildiği **saha
   gözlemiyle** doğrulanmadı; kural takımın bina bilgisine dayanıyor.
 - Merdiven hızı kişiye göre değişir; tek katsayı ile temsil ediliyor.
 - Yoğunluk pencereleri ders programından **tahmin edildi**, ölçülmedi.

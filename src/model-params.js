@@ -18,10 +18,10 @@ const BUILDING = {
   groundFloor: 1,
   /**
    * Ortak katlar: dört asansör de bu katlara uğrar.
-   * 1 = zemin kat. 4. kattan yukarısı tek/çift ayrımına döner:
-   * tek katlar tek asansörlere, çift katlar çift asansörlere.
+   * 1 = zemin kat. 15. kata hem tek hem çift asansör çıkabilir.
+   * Aradaki katlarda tek/çift ayrımı geçerli.
    */
-  commonFloors: [1, 2, 3],
+  commonFloors: [1, 2, 3, 15],
   groups: {
     odd: { label: 'Tek kat asansörleri', lifts: 2 },
     even: { label: 'Çift kat asansörleri', lifts: 2 },

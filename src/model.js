@@ -34,7 +34,8 @@ function isCommonFloor(floor) {
 
 /**
  * Grup bu kata hizmet ediyor mu?
- * 1–3 ortak katlardır, her iki grup da uğrar. 4 ve üstünde tek/çift ayrımı.
+ * 1, 2, 3 ve 15 ortak katlardır, her iki grup da uğrar. Aradaki katlarda
+ * tek/çift ayrımı geçerlidir.
  */
 function servesGroup(group, floor) {
   if (!Number.isInteger(floor) || floor < 1 || floor > BUILDING.floors) return false
@@ -139,7 +140,7 @@ function rideSeconds(fromFloor, toFloor) {
 
 /**
  * Tek binişlik asansör seçenekleri: iki katı da servis eden grup(lar).
- * Ortak katlar (1–3) sayesinde bu katlardan her yöne doğrudan binilebilir.
+ * Ortak katlar (1, 2, 3 ve 15) sayesinde bu katlardan her yöne doğrudan binilebilir.
  */
 function directOptions(fromFloor, toFloor, minutesOfDay) {
   const toGroups = groupsForFloor(toFloor)
