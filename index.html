@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Elevator Mobility · Katlar arası karar</title>
+  <meta name="description" content="15 katlı binada hangi asansör grubunun çalıştığını ve asansör ile merdiven arasındaki süre farkını gösteren karar aracı." />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="Bölümler">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="3" width="16" height="18" rx="2" />
+            <path d="M12 3v18" />
+            <path d="M8 8.5 8 15" />
+            <path d="M16 8.5 16 15" />
+          </svg>
+        </span>
+        <span class="brand-text">Campus Elevator</span>
+      </div>
+
+      <nav class="rail-nav">
+        <a href="#karar" class="rail-link is-active" data-section="karar">Karar</a>
+        <a href="#varsayimlar" class="rail-link" data-section="varsayimlar">Varsayımlar</a>
+        <a href="#gozlemler" class="rail-link" data-section="gozlemler">Gözlemler</a>
+      </nav>
+
+      <div class="rail-meta">
+        <p class="rail-note">Model v1 · katsayılar varsayım</p>
+        <p class="rail-note rail-note-quiet">Saha ölçümü geldikçe kalibre edilir</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">Campus Operations · Bina 15 kat</p>
+          <h1>Katlar arası karar</h1>
+        </div>
+        <div class="head-status">
+          <p class="status-line" id="clock-status">Saat 09:30</p>
+          <p class="status-line status-quiet" id="congestion-status">Ders geçişi dışı</p>
+        </div>
+      </header>
+
+      <section id="karar" class="section" aria-labelledby="karar-title">
+        <h2 class="section-title" id="karar-title">Yolculuk</h2>
+
+        <div class="workspace">
+          <div class="col-main">
+            <form class="panel form-panel" id="journey-form" novalidate>
+              <div class="field-row">
+                <div class="field">
+                  <label for="from-floor">Biniş katı</label>
+                  <select id="from-floor" name="fromFloor"></select>
+                </div>
+                <div class="field">
+                  <label for="to-floor">Hedef kat</label>
+                  <select id="to-floor" name="toFloor"></select>
+                </div>
+                <div class="field">
+                  <label for="time-input">Saat</label>
+                  <input id="time-input" name="time" type="time" step="60" />
+                </div>
+              </div>
+
+              <label class="switch" for="stairs-toggle">
+                <input id="stairs-toggle" type="checkbox" name="stairsAllowed" />
+                <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                <span class="switch-text">
+                  Merdiven kullanamıyorum
+                  <span class="switch-hint">Asansör tek seçenek sayılır, merdiven önerilmez</span>
+                </span>
+              </label>
+            </form>
+
+            <section class="panel result-panel" aria-labelledby="result-title">
+              <div class="panel-head">
+                <h2 class="panel-title" id="result-title">Sonuç</h2>
+                <p class="panel-meta" id="result-meta">Tahmin</p>
+              </div>
+
+              <div id="result-region" role="status" aria-live="polite">
+                <p class="outcome" id="outcome-title">Hesaplanıyor</p>
+                <p class="outcome-sub" id="outcome-sub"></p>
+
+                <ul class="compare" id="compare-list">
+                  <li class="compare-row" id="elevator-row">
+                    <span class="compare-label" id="elevator-label">Asansör</span>
+                    <span class="compare-bar"><span class="bar-fill bar-elevator" id="elevator-bar"></span></span>
+                    <span class="compare-value" id="elevator-value">—</span>
+                  </li>
+                  <li class="compare-row" id="stairs-row">
+                    <span class="compare-label">Merdiven</span>
+                    <span class="compare-bar"><span class="bar-fill bar-stairs" id="stairs-bar"></span></span>
+                    <span class="compare-value" id="stairs-value">—</span>
+                  </li>
+                </ul>
+              </div>
+
+              <details class="breakdown">
+                <summary>Nasıl hesaplandı</summary>
+                <dl class="breakdown-list" id="breakdown-list"></dl>
+              </details>
+
+              <p class="disclaimer">Süreler tahmindir. Katsayılar sahada ölçülmedi; <a href="#varsayimlar">varsayımlara</a> bakın.</p>
+            </section>
+
+            <section class="panel note-panel" aria-labelledby="note-title">
+              <h2 class="panel-title" id="note-title">Bilinmesi gereken</h2>
+              <p>
+                Gerçek asansör konumu ve çağrı verisine erişim henüz doğrulanmadı.
+                Bu ekran, ölçülmüş bir bekleme süresi iddiası taşımaz; katsayılardan
+                üretilen bir tahmindir.
+              </p>
+            </section>
+          </div>
+
+          <div class="col-side">
+            <section class="panel shaft-panel" aria-labelledby="shaft-title">
+              <div class="panel-head">
+                <h2 class="panel-title" id="shaft-title">Bina</h2>
+              </div>
+              <div class="shaft-head">
+                <span aria-hidden="true"></span>
+                <span class="shaft-cap">Tek</span>
+                <span class="shaft-cap">Çift</span>
+              </div>
+              <ol class="shaft" id="shaft"></ol>
+              <p class="shaft-legend">
+                <span class="legend-dot legend-board"></span> Biniş
+                <span class="legend-dot legend-target"></span> Hedef
+              </p>
+              <p class="shaft-note">1–3 ortak kat: dört asansör de uğrar. 4 ve üstü tek/çift ayrımı.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="varsayimlar" class="section" aria-labelledby="varsayimlar-title">
+        <div class="section-head">
+          <h2 class="section-title" id="varsayimlar-title">Model varsayımları</h2>
+          <p class="section-note">Her katsayı tek dosyada: <code>src/model-params.js</code></p>
+        </div>
+        <div class="table-wrap" role="region" aria-label="Model katsayıları tablosu" tabindex="0">
+          <table class="params-table">
+            <caption class="visually-hidden">Model katsayıları, değerleri ve kaynak etiketleri</caption>
+            <thead>
+              <tr>
+                <th scope="col">Katsayı</th>
+                <th scope="col">Değer</th>
+                <th scope="col">Kaynak</th>
+                <th scope="col">Not</th>
+              </tr>
+            </thead>
+            <tbody id="params-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="gozlemler" class="section" aria-labelledby="gozlemler-title">
+        <div class="section-head">
+          <h2 class="section-title" id="gozlemler-title">Gözlem kaydı</h2>
+          <p class="section-note" id="observation-count">Bu tarayıcıda 0 kayıt</p>
+        </div>
+
+        <div class="workspace">
+          <div class="col-main">
+            <form class="panel form-panel" id="observation-form" novalidate>
+              <div class="field-row">
+                <div class="field">
+                  <label for="observation-floor">Biniş katı</label>
+                  <select id="observation-floor" name="floor"></select>
+                </div>
+                <div class="field">
+                  <label for="observation-wait">Ölçülen bekleme (sn)</label>
+                  <input id="observation-wait" name="waitSeconds" type="number" min="1" max="900" step="1" inputmode="numeric" placeholder="Örn. 95" aria-describedby="observation-error form-hint-observation" />
+                </div>
+                <div class="field field-action">
+                  <button class="button button-primary" type="submit">Kaydet</button>
+                </div>
+              </div>
+              <p class="form-error" id="observation-error" role="alert" hidden></p>
+              <p class="form-hint" id="form-hint-observation">Kayıtlar localStorage'da tutulur, sunucuya gitmez. CSV ile dışa aktarılabilir.</p>
+            </form>
+
+            <div class="table-wrap" id="observation-table-wrap" role="region" aria-label="Kaydedilmiş ölçümler tablosu" tabindex="0" hidden>
+              <table class="params-table">
+                <caption class="visually-hidden">Kaydedilmiş bekleme ölçümleri</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Saat</th>
+                    <th scope="col">Kat</th>
+                    <th scope="col">Grup</th>
+                    <th scope="col">Bekleme</th>
+                    <th scope="col"><span class="visually-hidden">İşlem</span></th>
+                  </tr>
+                </thead>
+                <tbody id="observation-body"></tbody>
+              </table>
+            </div>
+            <p class="empty-state" id="observation-empty">Henüz ölçüm yok. İlk kayıt, modelin kalibrasyon başlangıcıdır.</p>
+          </div>
+
+          <div class="col-side">
+            <section class="panel note-panel" aria-labelledby="export-title">
+              <h2 class="panel-title" id="export-title">Dışa aktar</h2>
+              <p>Ölçümler CSV olarak indirilir; ekip aynı dosyadan kalibrasyon yapar.</p>
+              <button class="button" type="button" id="export-csv">CSV indir</button>
+              <button class="button button-quiet" type="button" id="clear-observations">Kayıtları sil</button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <footer class="page-foot">
+        <p>Tahmin modeli v1 · katsayılar varsayım · <a href="./docs/mvp-scope.md">kapsam</a> · <a href="./docs/test-report.md">test raporu</a></p>
+        <p class="foot-quiet">Campus Operations — Team 00</p>
+      </footer>
+    </main>
+  </div>
+
+  <noscript>
+    <p class="noscript">Bu araç hesaplama için JavaScript gerektirir.</p>
+  </noscript>
+
+  <script src="./src/model-params.js"></script>
+  <script src="./src/model.js"></script>
+  <script src="./src/present.js"></script>
+  <script src="./src/evidence.js"></script>
+  <script src="./src/app.js"></script>
+</body>
+</html>

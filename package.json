@@ -1,0 +1,14 @@
+{
+  "name": "campus-elevator-mobility",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Campus Elevator Mobility MVP — 15 katlı bina için asansör/merdiven karar aracı",
+  "scripts": {
+    "test": "node --test tests/",
+    "serve": "node tools/serve.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
